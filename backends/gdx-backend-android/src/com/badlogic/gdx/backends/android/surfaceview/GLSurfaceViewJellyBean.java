@@ -1469,6 +1469,7 @@ public class GLSurfaceViewJellyBean extends SurfaceView implements SurfaceHolder
                     Log.i("GLThread", "surfaceCreated tid=" + getId());
                 }
                 mHasSurface = true;
+                mSurfaceIsBad = false; // apparently in some cases surfaceDestroyed is never called
                 sGLThreadManager.notifyAll();
                 while((mWaitingForSurface) && (!mExited)) {
                     try {
