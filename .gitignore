@@ -33,6 +33,7 @@ ipch/
 *.class
 
 libgdx-*.zip
+libgdx-*.MD5
 
 *.iml
 /.idea/
