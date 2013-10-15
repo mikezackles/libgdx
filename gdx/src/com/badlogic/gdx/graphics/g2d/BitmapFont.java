@@ -831,9 +831,15 @@ public class BitmapFont implements Disposable {
 				for (int p=0; p<imgPageCount; p++) {
 					//read each "page" info line
 					line = reader.readLine();
-					if (line == null) throw new GdxRuntimeException("Expected more 'page' definitions in font file "+fontFile);
+					if (line == null) {
+						reader.close();
+						throw new GdxRuntimeException("Expected more 'page' definitions in font file "+fontFile);
+					}
 					String[] pageLine = line.split(" ", 4);
-					if (!pageLine[2].startsWith("file=")) throw new GdxRuntimeException("Invalid font file: " + fontFile);
+					if (!pageLine[2].startsWith("file=")) {
+						reader.close();
+						throw new GdxRuntimeException("Invalid font file: " + fontFile);
+					}
 					
 					//we will expect ID to mean "index" -- if for some reason this is not the case, it will fuck everything up
 					//so we need to warn the user that their BMFont output is bogus
@@ -843,6 +849,7 @@ public class BitmapFont implements Disposable {
 							if (pageID != p)
 								throw new GdxRuntimeException("Invalid font file: "+fontFile+" -- page ids must be indices starting at 0");
 						} catch (NumberFormatException e) {
+							reader.close();
 							throw new GdxRuntimeException("NumberFormatException on 'page id' element of "+fontFile);
 						}
 					}

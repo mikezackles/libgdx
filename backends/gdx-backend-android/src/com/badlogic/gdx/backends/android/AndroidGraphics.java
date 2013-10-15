@@ -35,6 +35,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceView20;
 import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceViewCupcake;
+import com.badlogic.gdx.backends.android.surfaceview.GLSurfaceViewJellyBean;
 import com.badlogic.gdx.backends.android.surfaceview.GdxEglConfigChooser;
 import com.badlogic.gdx.backends.android.surfaceview.ResolutionStrategy;
 import com.badlogic.gdx.graphics.GL10;
@@ -649,6 +650,7 @@ public final class AndroidGraphics implements Graphics, Renderer {
 			this.isContinuous = isContinuous;
 			int renderMode = isContinuous ? GLSurfaceView.RENDERMODE_CONTINUOUSLY : GLSurfaceView.RENDERMODE_WHEN_DIRTY;
 			if (view instanceof GLSurfaceViewCupcake) ((GLSurfaceViewCupcake)view).setRenderMode(renderMode);
+			if (view instanceof GLSurfaceViewJellyBean) ((GLSurfaceViewJellyBean)view).setRenderMode(renderMode);
 			if (view instanceof GLSurfaceView) ((GLSurfaceView)view).setRenderMode(renderMode);
 			mean.clear();
 		}
@@ -662,6 +664,7 @@ public final class AndroidGraphics implements Graphics, Renderer {
 	public void requestRendering () {
 		if (view != null) {
 			if (view instanceof GLSurfaceViewCupcake) ((GLSurfaceViewCupcake)view).requestRender();
+			if (view instanceof GLSurfaceViewJellyBean) ((GLSurfaceViewJellyBean)view).requestRender();
 			if (view instanceof GLSurfaceView) ((GLSurfaceView)view).requestRender();
 		}
 	}
