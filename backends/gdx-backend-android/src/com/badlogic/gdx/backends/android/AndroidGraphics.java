@@ -485,8 +485,9 @@ public final class AndroidGraphics implements Graphics, Renderer {
 				}
 			}
 			app.input.processEvents();
-			app.listener.render();
 		}
+
+		app.listener.render();
 
 		if (lpause) {
 			Array<LifecycleListener> listeners = ((AndroidApplication)app).lifecycleListeners;
