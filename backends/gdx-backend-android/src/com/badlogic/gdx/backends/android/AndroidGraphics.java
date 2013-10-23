@@ -321,8 +321,8 @@ public final class AndroidGraphics implements Graphics, Renderer {
 		gl.glViewport(0, 0, this.width, this.height);
 		if (created == false) {
 			app.listener.create();
-			created = true;
-			synchronized (this) {
+			synchronized (synch) {
+				created = true;
 				running = true;
 			}
 		}
@@ -412,6 +412,7 @@ public final class AndroidGraphics implements Graphics, Renderer {
 
 	void destroy () {
 		synchronized (synch) {
+			created = false;
 			running = false;
 			destroy = true;
 
@@ -432,12 +433,14 @@ public final class AndroidGraphics implements Graphics, Renderer {
 		lastFrameTime = time;
 		mean.addValue(deltaTime);
 
+		boolean lcreated = false;
 		boolean lrunning = false;
 		boolean lpause = false;
 		boolean ldestroy = false;
 		boolean lresume = false;
 
 		synchronized (synch) {
+			lcreated = created;
 			lrunning = running;
 			lpause = pause;
 			ldestroy = destroy;
@@ -487,7 +490,9 @@ public final class AndroidGraphics implements Graphics, Renderer {
 			app.input.processEvents();
 		}
 
-		app.listener.render();
+		if (lcreated) {
+			app.listener.render();
+		}
 
 		if (lpause) {
 			Array<LifecycleListener> listeners = ((AndroidApplication)app).lifecycleListeners;
