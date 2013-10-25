@@ -113,7 +113,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 	private boolean catchMenu = false;
 	protected final Vibrator vibrator;
 	private boolean compassAvailable = false;
-	boolean keyboardAvailable;
+	public boolean keyboardAvailable;
 	private final float[] magneticFieldValues = new float[3];
 	private float azimuth = 0;
 	private float pitch = 0;
@@ -167,6 +167,16 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		} else {
 			nativeOrientation = Orientation.Portrait;
 		}
+	}
+
+	public void erasePointerIds() {
+		for (int i = 0; i < realId.length; i++)
+			realId[i] = -1;
+	}
+
+	public void eraseTouchedState() {
+		for (int i = 0; i < touched.length; i++)
+			touched[i] = false;
 	}
 
 	@Override
@@ -322,7 +332,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		}
 	}
 
-	void processEvents () {
+	public void processEvents () {
 		synchronized (this) {
 			justTouched = false;
 
@@ -621,7 +631,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		return roll;
 	}
 
-	void registerSensorListeners () {
+	public void registerSensorListeners () {
 		if (config.useAccelerometer) {
 			manager = (SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
 			if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() == 0) {
@@ -652,7 +662,7 @@ public class AndroidInput implements Input, OnKeyListener, OnTouchListener {
 		Gdx.app.log("AndroidInput", "sensor listener setup");
 	}
 
-	void unregisterSensorListeners () {
+	public void unregisterSensorListeners () {
 		if (manager != null) {
 			if (accelerometerListener != null) {
 				manager.unregisterListener(accelerometerListener);
